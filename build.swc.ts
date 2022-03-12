@@ -6,7 +6,7 @@ import fs from 'fs-extra'
 import logger from 'jet-logger'
 import childProcess from 'child_process'
 
-console.log('On Build.ts')
+console.log('Building with sws...')
 function remove(loc: string): Promise<void> {
   return new Promise((resolve, reject) => {
     return fs.remove(loc, err => {
@@ -46,7 +46,7 @@ function exec(cmd: string, loc: string): Promise<void> {
     await copy({ src: './src/views', dest: './dist/views' })
 
     // Copy back-end files
-    await exec('tsc --build tsconfig.prod.json', './')
+    await exec('npx swc src -d dist --source-maps --copy-files', './')
   } catch (err) {
     logger.err(err)
   }

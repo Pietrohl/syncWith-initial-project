@@ -4,8 +4,14 @@
     "sourceMap": false
   },
   "exclude": [
+    "node_modules",
     "spec",
     "src/**/*.mock.ts",
     "src/public/"
+  ],
+  "include": [
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./src/**/**.*.ts",
   ]
 }
