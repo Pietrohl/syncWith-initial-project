@@ -1,5 +1,6 @@
 import morgan, { StreamOptions } from 'morgan'
 import winston from 'winston'
+
 /*
  * Winston Middleware
  */
@@ -12,7 +13,7 @@ const colors = {
 }
 winston.addColors(colors)
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: (() => {
     const env = process.env.NODE_ENV || 'development'
     const isDevelopment = env === 'development'
@@ -51,9 +52,9 @@ const stream: StreamOptions = {
   write: message => logger.http(message)
 }
 
-const m = () =>
+const loggerMiddleware = () =>
   morgan('tiny', {
     stream: stream
   })
 
-export default m
+export default loggerMiddleware

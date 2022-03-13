@@ -1,7 +1,7 @@
 import passport from 'passport'
 import { Strategy } from 'passport-google-oauth20'
 import dotenv from 'dotenv'
-
+import { User } from '@/types/middleware'
 dotenv.config()
 
 const googleStrategy = new Strategy(
@@ -11,13 +11,15 @@ const googleStrategy = new Strategy(
     callbackURL: 'http://localhost:8000/auth/callback',
     passReqToCallback: true
   },
-  (_req, _accessToken, _refreshToken, profile, cb) => {
-    const { displayName, emails = [] } = profile
-
+  (_req, accessToken, refreshToken, profile, cb) => {
+    const { _json } = profile
+    const cookie = _req.header('cookie')
     return cb(null, {
-      name: displayName,
-      email: emails[0]?.value
-    })
+      ..._json,
+      accessToken,
+      refreshToken,
+      cookie
+    } as User)
   }
 )
 

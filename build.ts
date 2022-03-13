@@ -6,7 +6,6 @@ import fs from 'fs-extra'
 import logger from 'jet-logger'
 import childProcess from 'child_process'
 
-console.log('On Build.ts')
 function remove(loc: string): Promise<void> {
   return new Promise((resolve, reject) => {
     return fs.remove(loc, err => {
@@ -39,6 +38,16 @@ function exec(cmd: string, loc: string): Promise<void> {
 
 ;(async () => {
   try {
+    console.log(
+      '\n',
+      '==========================================================================\n',
+      '==========================================================================\n',
+      '\n',
+      'Buiding server....\n',
+      '\n',
+      '==========================================================================\n',
+      '==========================================================================\n'
+    )
     // Remove current build
     await remove('./dist/')
     // Copy front-end files
@@ -47,6 +56,17 @@ function exec(cmd: string, loc: string): Promise<void> {
 
     // Copy back-end files
     await exec('tsc --build tsconfig.prod.json', './')
+
+    console.log(
+      '\n',
+      '==========================================================================\n',
+      '==========================================================================\n',
+      '\n',
+      'Server Build....\n',
+      '\n',
+      '==========================================================================\n',
+      '==========================================================================\n'
+    )
   } catch (err) {
     logger.err(err)
   }
