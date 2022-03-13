@@ -49,8 +49,8 @@ function exec(cmd: string, loc: string): Promise<void> {
       '==========================================================================\n'
     )
     // Remove current build
-    await remove('./dist/')
     await exec('knex migrate:rollback --env production', './')
+    await remove('./dist/')
 
     // Copy front-end files
     await copy({ src: './src/public', dest: './dist/public' })
@@ -59,6 +59,7 @@ function exec(cmd: string, loc: string): Promise<void> {
     // Copy back-end files
     await exec('tsc --build tsconfig.prod.json', './')
     await exec('knex migrate:latest --env production', './')
+    await exec('knex seed:run --env production', './')
 
     console.log(
       '\n',

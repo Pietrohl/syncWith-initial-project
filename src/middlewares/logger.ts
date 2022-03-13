@@ -17,7 +17,7 @@ export const logger = winston.createLogger({
   level: (() => {
     const env = process.env.NODE_ENV || 'development'
     const isDevelopment = env === 'development'
-    return isDevelopment ? 'debug' : 'warn'
+    return isDevelopment ? 'debug' : 'info'
   })(),
   levels: {
     error: 0,
@@ -35,7 +35,7 @@ export const logger = winston.createLogger({
   ),
   defaultMeta: { service: 'user-service' },
   transports: [
-    new winston.transports.Console(),
+    new winston.transports.Console({ level: 'http' }),
     new winston.transports.File({
       filename: 'logs/error.log',
       level: 'error'

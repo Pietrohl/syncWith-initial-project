@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import passport from 'passport'
 import { Service } from 'typedi'
 import { Credentials } from 'google-auth-library'
 import { isAuth, passportMiddleware } from '../middlewares'
@@ -13,6 +12,7 @@ export default class IndexRouter {
   constructor() {
     this.routeName = '/'
     this.router = Router()
+    const env = process.env.NODE_ENV ?? 'development'
 
     this.router.get(
       '/auth',
@@ -29,7 +29,7 @@ export default class IndexRouter {
 
     this.router.get(
       '/auth/callback',
-      passport.authenticate('google', {
+      passportMiddleware.authenticate('google', {
         successRedirect: '/protected',
         failureRedirect: '/error'
       }),
@@ -39,12 +39,16 @@ export default class IndexRouter {
     )
 
     this.router.get('/protected', isAuth, (req, res) => {
-      if (!req.user) {
-        res.end()
-        return
+      if (env === 'development') {
+        if (!req.user) {
+          res.end()
+          return
+        }
+        const { name } = req.user as User
+        res.render('protected.hbs', { name })
+      } else {
+        res.redirect('/people')
       }
-      const { name } = req.user as User
-      res.render('protected.hbs', { name })
     })
 
     this.router.get('/people', isAuth, async (req, res) => {
