@@ -4,7 +4,8 @@ import {
   loggerMiddleware,
   sessionMiddleware,
   passportMiddleware,
-  logger
+  logger,
+  errorMiddleware
 } from './middlewares'
 import { ExpressRouter } from './types/middleware'
 import { configViewEngine } from './views'
@@ -19,6 +20,7 @@ export default class App {
     this.initializeMiddlewares()
     this.initializeRoutes(expressRouters)
     this.setStaticResources()
+    this.setErrorHandling()
     this.start()
   }
 
@@ -33,8 +35,6 @@ export default class App {
     this.#app.use(sessionMiddleware)
     this.#app.use(passportMiddleware.initialize())
     this.#app.use(passportMiddleware.session())
-
-    configViewEngine(this.#app)
   }
 
   private initializeRoutes(expressRouters: ExpressRouter[]) {
@@ -44,7 +44,12 @@ export default class App {
   }
 
   private setStaticResources() {
+    configViewEngine(this.#app)
     this.#app.use('/public', e.static('./src/public'))
+  }
+
+  private setErrorHandling() {
+    this.#app.use(errorMiddleware)
   }
 
   public start() {

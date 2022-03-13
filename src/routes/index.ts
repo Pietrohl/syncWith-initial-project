@@ -98,7 +98,7 @@ export default class IndexRouter {
     })
 
     this.router.get('/error', (_, res) => {
-      res.send('Auth Failed')
+      res.send('Authentication Failed!')
     })
 
     this.router.get('', (_, res, __) => {

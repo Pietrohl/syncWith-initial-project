@@ -50,12 +50,14 @@ function exec(cmd: string, loc: string): Promise<void> {
 
     // Remove current build
     await remove('./dist/')
+
     // Copy front-end files
     await copy({ src: './src/public', dest: './dist/public' })
     await copy({ src: './src/views', dest: './dist/views' })
 
     // Copy back-end files
     await exec('npx swc src --config-file .swcrc -d dist --copy-files', './')
+    await exec('knex migrate:latest --env production', './')
 
     console.log(
       '\n',

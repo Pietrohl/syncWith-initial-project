@@ -50,12 +50,15 @@ function exec(cmd: string, loc: string): Promise<void> {
     )
     // Remove current build
     await remove('./dist/')
+    await exec('knex migrate:rollback --env production', './')
+
     // Copy front-end files
     await copy({ src: './src/public', dest: './dist/public' })
     await copy({ src: './src/views', dest: './dist/views' })
 
     // Copy back-end files
     await exec('tsc --build tsconfig.prod.json', './')
+    await exec('knex migrate:latest --env production', './')
 
     console.log(
       '\n',
