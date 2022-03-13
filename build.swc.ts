@@ -49,7 +49,6 @@ function exec(cmd: string, loc: string): Promise<void> {
     )
 
     // Remove current build
-    await exec('knex migrate:rollback --env production', './')
     await remove('./dist/')
 
     // Copy front-end files
