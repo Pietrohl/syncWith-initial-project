@@ -28,7 +28,11 @@ You can also run the serve in dev mode, using ts-node
  ```bash
 npm start:dev
 ```
+## Demo
 
+
+
+[https://sync-with.herokuapp.com/](https://sync-with.herokuapp.com/)
 
 ## API Reference
 
@@ -62,7 +66,7 @@ If user  is not logged on google or app is not approved googleAPI will prompt th
 ```
 The user will be to navigate to /auth after pressing a button presented on the page 
 
-#### Protected Route
+#### Protected Route (DEV)
 
 ```http
   GET /protected
